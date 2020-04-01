@@ -1,7 +1,4 @@
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 
 public class Main {
 
@@ -10,12 +7,15 @@ public class Main {
 
         Car smart = new Car();
         Car evoque = new Car();
-
+/*
         smart.setAutocarro(false);
         evoque.setAutocarro(true);
 
         smart.setNumber("SMR123");
         evoque.setNumber("EV456");
+
+        smart.setProducer("Mercedes");
+        evoque.setProducer("Land Rover");
 
         try {
             var fos = new FileOutputStream("cars.ser");
@@ -31,6 +31,20 @@ public class Main {
             e.printStackTrace();
         }
 
+*/
+        try {
+            ObjectInputStream is = new ObjectInputStream(new FileInputStream("cars.ser"));
 
+            smart = (Car)is.readObject();
+            evoque = (Car)is.readObject();
+            is.close();
+
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("cars:");
+        System.out.println(smart);
+        System.out.println(evoque);
     }
 }
