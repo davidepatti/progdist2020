@@ -1,7 +1,4 @@
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.util.Scanner;
 
 public class MyApp {
@@ -36,6 +33,21 @@ public class MyApp {
 
     }
 
+    public void loadArchive() {
+        Scanner s = new Scanner(System.in);
+        System.out.print("Load filename:");
+        String filename = s.next();
+
+        try {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename));
+            archive = (Archive) ois.readObject();
+            System.out.println("Archive loaded!");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void showMenu(){
         int choice;
         Scanner input = new Scanner(System.in);
@@ -63,7 +75,7 @@ public class MyApp {
                     archive.create();
                     break;
                 case 2:
-                    // load
+                    loadArchive();
                     break;
                 case 3:
                     this.saveArchive();

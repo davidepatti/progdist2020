@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Archive {
+public class Archive implements Serializable {
     ArrayList<Person> content = new ArrayList<Person>();
     String creation_date;
     String last_modification;
@@ -23,6 +24,7 @@ public class Archive {
         System.out.println("Cleared content");
         Date d = new Date();
         creation_date = d.toString();
+        last_modification = null;
     }
 
     public void show(){
