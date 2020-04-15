@@ -4,7 +4,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class MyServer {
+public class MyServer2 {
 
     ServerSocket socket;
     Socket client_socket;
@@ -21,7 +21,7 @@ public class MyServer {
         server.start();
     }
 
-    public MyServer(int port) {
+    public MyServer2(int port) {
         // we could also put port value checks here...
         System.out.println("Initializing server with port "+port);
         this.port = port;
@@ -43,17 +43,32 @@ public class MyServer {
                 boolean go = true;
                 while (go) {
                     String message = client_scanner.nextLine();
-                    System.out.println("Server: Received "+message);
+                    System.out.println("Server Received: "+message);
 
-                    String message_big = message.toUpperCase();
-                    System.out.println("Server: Sending "+message_big+" to "+client_socket.getRemoteSocketAddress());
-                    pw.println(message_big);
-                    pw.flush(); // DO NOT FORGET!
-                    if (message.equals("QUIT")) {
+                    if (message.startsWith("TOUP")) {
+                        System.out.println("TOUP command received");
+                        String answer;
+                        answer = message.substring(4);
+                        pw.println(answer.toUpperCase());
+                        pw.flush();
+                    }
+                    else if (message.startsWith("CMD1")) {
+                        System.out.println("Executing CMD1 on "+message.substring(4));
+                        // something happens....
+                        pw.println("CMD1_OK");
+                        pw.flush();
+                    }
+                    else if (message.equals("QUIT")) {
                         System.out.println("Server: Closing connection to "+client_socket.getRemoteSocketAddress());
                         client_socket.close();
                         go = false;
                     }
+                    else {
+                        System.out.println("Unknown command "+ message);
+                        pw.println("ERROR_CMD");
+                        pw.flush();
+                    }
+
                 }
             }
 

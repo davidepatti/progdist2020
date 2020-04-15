@@ -49,6 +49,9 @@ public class MyClient {
                 String received_message = scanner.nextLine();
                 System.out.println("Received: "+received_message);
 
+                // client could attach a scanner to the string received message ...
+
+
                 if (message_to_send.equals("QUIT")) {
                     System.out.println("Closing connection to "+socket.getRemoteSocketAddress());
                     socket.close();
