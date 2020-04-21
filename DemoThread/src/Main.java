@@ -12,13 +12,31 @@ public class Main {
 
         Cat felix = new Cat("felix");
         Cat tom = new Cat("tom");
+        Cat sylvester = new Cat("sylvester");
+        Food croccantini = new Food();
+
+        felix.setMyfood(croccantini);
+        tom.setMyfood(croccantini);
+        sylvester.setMyfood(croccantini);
 
         // the two lines below dont start anything!
         Thread t1 = new Thread(felix);
         Thread t2 = new Thread(tom);
 
+        Thread t3 = new Thread(sylvester,sylvester.getName());
+
         t1.start();
         t2.start();
+        t3.start();
+
+        // other threading style: Thread object embedded inside the runnable
+        Dog fido = new Dog();
+        Dog pluto = new Dog();
+
+        fido.startMyDog();
+        pluto.startMyDog();
+
+
 
         boolean go = true;
         try {
