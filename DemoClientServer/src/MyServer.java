@@ -17,7 +17,7 @@ public class MyServer {
             return;
         }
 
-        MyServer2 server = new MyServer2(Integer.parseInt(args[0]));
+        MyServer server = new MyServer(Integer.parseInt(args[0]));
         server.start();
     }
 

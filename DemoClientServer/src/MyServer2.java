@@ -27,6 +27,45 @@ public class MyServer2 {
         this.port = port;
     }
 
+    private void manageClient(Socket client_socket) throws IOException {
+        System.out.println("Accepted connection from " + client_socket.getRemoteSocketAddress());
+
+        Scanner client_scanner = new Scanner(client_socket.getInputStream());
+        PrintWriter pw = new PrintWriter(client_socket.getOutputStream());
+
+        boolean go = true;
+        while (go) {
+            String message = client_scanner.nextLine();
+            System.out.println("Server Received: "+message);
+
+            if (message.startsWith("TOUP")) {
+                System.out.println("TOUP command received");
+                String answer;
+                answer = message.substring(4);
+                pw.println(answer.toUpperCase());
+                pw.flush();
+            }
+            else if (message.startsWith("CMD1")) {
+                System.out.println("Executing CMD1 on "+message.substring(4));
+                // something happens....
+                pw.println("CMD1_OK");
+                pw.flush();
+            }
+            else if (message.equals("QUIT")) {
+                System.out.println("Server: Closing connection to "+client_socket.getRemoteSocketAddress());
+                client_socket.close();
+                go = false;
+            }
+            else {
+                System.out.println("Unknown command "+ message);
+                pw.println("ERROR_CMD");
+                pw.flush();
+            }
+
+        }
+
+    }
+
     public void start() {
         try {
             System.out.println("Starting server on port "+port);
@@ -35,41 +74,9 @@ public class MyServer2 {
             while (true) {
                 System.out.println("Listening on port " + port);
                 client_socket = socket.accept();
-                System.out.println("Accepted connection from " + client_socket.getRemoteSocketAddress());
 
-                Scanner client_scanner = new Scanner(client_socket.getInputStream());
-                PrintWriter pw = new PrintWriter(client_socket.getOutputStream());
+                manageClient(client_socket);
 
-                boolean go = true;
-                while (go) {
-                    String message = client_scanner.nextLine();
-                    System.out.println("Server Received: "+message);
-
-                    if (message.startsWith("TOUP")) {
-                        System.out.println("TOUP command received");
-                        String answer;
-                        answer = message.substring(4);
-                        pw.println(answer.toUpperCase());
-                        pw.flush();
-                    }
-                    else if (message.startsWith("CMD1")) {
-                        System.out.println("Executing CMD1 on "+message.substring(4));
-                        // something happens....
-                        pw.println("CMD1_OK");
-                        pw.flush();
-                    }
-                    else if (message.equals("QUIT")) {
-                        System.out.println("Server: Closing connection to "+client_socket.getRemoteSocketAddress());
-                        client_socket.close();
-                        go = false;
-                    }
-                    else {
-                        System.out.println("Unknown command "+ message);
-                        pw.println("ERROR_CMD");
-                        pw.flush();
-                    }
-
-                }
             }
 
         } catch (IOException e) {
